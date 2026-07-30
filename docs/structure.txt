@@ -1,0 +1,29 @@
+cybershield-forense/
+├── docs/
+│   └── estrutura.txt          # Mapa da arquitetura do projeto (Este arquivo)
+├── src/
+│   └── cybershield_forense/   # Código do Core da Aplicação
+│       ├── db/
+│       │   ├── base.py        # Declarative_base do SQLAlchemy
+│       │   └── session.py     # Engine e Sessionmaker do banco
+│       ├── models/
+│       │   ├── __init__.py    # Exposição unificada de tabelas do ORM
+│       │   ├── atacante.py    # Modelo relacional de atacantes
+│       │   └── incidente.py   # Modelo relacional de incidentes
+│       ├── schemas/
+│       │   ├── __init__.py    # Exposição unificada de schemas Pydantic
+│       │   ├── atacante.py    # Validação de dados do atacante (Pydantic V2)
+│       │   └── incidente.py   # Validação de dados do incidente (Pydantic V2)
+│       ├── services/
+│       │   ├── analytics.py   # Análise estatística com Polars e Plotly
+│       │   └── ingestion.py   # Ingestão idempotente de logs de ataques
+│       ├── routers/
+│       │   └── monitor.py     # Endpoints HTTP da API
+│       └── main.py            # Ponto de inicialização do FastAPI
+├── tests/                     # Ecossistema de Testes Automatizados
+│   ├── conftest.py            # Fixtures do pytest (Banco em memória e Cliente)
+│   ├── test_api.py            # Testes de integração dos endpoints HTTP
+│   └── test_ingestion.py      # Testes unitários do pipeline Polars
+├── pyproject.toml             # Centralizador de dependências e regras do Poetry
+├── poetry.lock                # Trava criptográfica de versões de pacotes
+└── README.md                  # Documentação comercial do repositório

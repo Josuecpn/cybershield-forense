@@ -1,0 +1,19 @@
+# Cache do Python e Compilações
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Ambientes Virtuais (Caso configure localmente)
+.venv/
+venv/
+
+# Banco de Dados Local (Segurança da Informação)
+*.db
+*.sqlite3
+
+# Relatórios e Gráficos Gerados em Disco
+*.html
+
+# vscode
+.vscode/ 
