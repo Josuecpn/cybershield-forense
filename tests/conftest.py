@@ -1,29 +1,36 @@
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
+from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import sessionmaker
-from cybershield_forense.db.base import Base
+
 from cybershield_forense.main import app
+from cybershield_forense.models import metadata
 from cybershield_forense.db.session import get_db
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL,
+    connect_args={"check_same_thread": False},
+    poolclass=StaticPool
+)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 @pytest.fixture(scope="function")
 def db_session():
-    """Recria as tabelas em memória a cada teste."""
-    Base.metadata.create_all(bind=engine)
+    """Garante que uma base de dados limpa com tabelas reais seja gerada a cada teste."""
+    metadata.create_all(bind=engine)
     db = TestingSessionLocal()
     try:
         yield db
     finally:
         db.close()
-        Base.metadata.drop_all(bind=engine)
+        metadata.drop_all(bind=engine)
 
 @pytest.fixture(scope="function")
 def client(db_session):
-    """Substitui o banco real pelo banco em memória nos testes."""
+    """Injeta a sessão em memória no FastAPI para simular requisições isoladas."""
     def _get_test_db():
         try:
             yield db_session

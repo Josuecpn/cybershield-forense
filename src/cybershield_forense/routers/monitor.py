@@ -1,8 +1,5 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, status
+from sqlalchemy.orm import Session
+from cybershield_forense.db.session import get_db
 
-router = APIRouter(prefix="/api/v1/monitor", tags=["Monitoramento Forense"])
-
-@router.get("/atacantes")
-async def listar_atacantes_estatico():
-    """Retorna um array vazio apenas para fazer o primeiro teste passar (TDD Green)."""
-    return []
+router = APIRouter(prefix="/api/v1/monitor", tags=["Dashboard e Estatísticas"])
